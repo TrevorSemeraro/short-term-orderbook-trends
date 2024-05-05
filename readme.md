@@ -13,14 +13,11 @@ Create a eural network using random forest regression to predict directionality,
 | ask_2_size       | number | Size of ask orders at depth=2               |
 | bid_n_size       | number | Size of bid orders at depth <= n            |
 | ask_n_size       | number | Size of ask orders at depth <= n            |
-
 | trade_price      | number | last traded price                           |
 | imbalance        | number | imbalance btw. top order levels             |
-
 | sum_trade_1s     | number | sum of quantity traded over the last second |
 | sum_trade_5s     | number | sum of quantity traded over the last second |
 | sum_trade_10s    | number | sum of quantity traded over the last second |
-
 | bid_advance_time | number | seconds since bid price last increased      |
 | ask_advance_time | number | seconds since ask price last decreased      |
 

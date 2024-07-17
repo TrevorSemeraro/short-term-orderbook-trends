@@ -1,6 +1,10 @@
 # Idea
 
-Create a neural network using random forest regression to predict directionality, and magnitude of short term orderbook movements using
+Create a neural network using random forest regression to predict directionality, and magnitude of short term orderbook movements.
+
+# Results
+
+Achieved an R^2 value of 0.5240, signifying strong enough predictive capabilities.
 
 ## Base Data
 

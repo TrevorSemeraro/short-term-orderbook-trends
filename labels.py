@@ -16,12 +16,13 @@ class LabelGenerator:
     
     @classmethod
     def generateLabel(cls, current_midprice: int, future_price: int) -> int:
-        if(future_price > current_midprice):
-            return 1
-        elif(future_price < current_midprice):
-            return -1
-        else:
-            return 0
+        return future_price - current_midprice
+        # if(future_price > current_midprice):
+        #     return 1
+        # elif(future_price < current_midprice):
+        #     return -1
+        # else:
+        #     return 0
     
     @staticmethod
     def create_timestamp_label(df: pd.DataFrame, offset_seconds: int, average_rows_per_second:int):

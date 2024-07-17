@@ -7,6 +7,8 @@ import datetime
 from feature_engineering import Features
 from labels import LabelGenerator
 
+MAX_ROWS = -1
+
 def x_y_split(data: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     label_cols = ['1s_change', '3s_change', '5s_change']
     feature_cols = list(set(data.columns) - set(label_cols))
@@ -22,13 +24,13 @@ def main():
     orderbook_data_file = f"./data/{prefix}_orderbook_5.csv"
 
     trade_df = pd.read_csv(trades_data_file,names=(
-    'timestamp',
-    'type',
-    'orderId',
-    'size',
-    'trade_price',
-    'direction'
-))
+        'timestamp',
+        'type',
+        'orderId',
+        'size',
+        'trade_price',
+        'direction'
+    ))
 
     orderbook_df = pd.read_csv(orderbook_data_file, names=(
         'ask_1_price',
@@ -56,9 +58,12 @@ def main():
         'bid_5_price',
         'bid_5_size',
     ))
+    
+    if(MAX_ROWS != -1):
+        trade_df = trade_df.head(MAX_ROWS)
+        orderbook_df = orderbook_df.head(MAX_ROWS)
 
     df = pd.concat([trade_df, orderbook_df], axis=1)
-    # print(df.head())
     df['timestamp'] = df['timestamp'] - 34200
 
     print("Main | Adding Features")
@@ -68,7 +73,34 @@ def main():
     df = LabelGenerator.createLabels(df)
     
     x, y = x_y_split(df)
+    x.drop(columns=[
+        'ask_1_price',
+        'bid_1_price',
+
+        'ask_2_price',
+        'bid_2_price',
+
+        'ask_3_price',
+        'bid_3_price',
+
+        'ask_4_price',
+        'bid_4_price',
+
+        'ask_5_price',
+        'bid_5_price',
+    ], inplace=True)
+    
     x = Features.lag_rolling_features(x)
+    
+    cols_to_ignore = {'timestamp', 'type', 'orderId', 'direction'}
+    cols = set(x.columns) - cols_to_ignore
+
+    for column in cols:
+        min = x[column].min()
+        max = x[column].max()
+        range = max - min
+            
+        x[column] = (x[column] - min) / range
     
     print("Main | Saving Data")
     x.to_csv(f"./data/features_{prefix}.csv", index=False)

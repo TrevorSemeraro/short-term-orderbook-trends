@@ -5,7 +5,6 @@ from data_types import OrderType
 
 class Features:
     timestamp = None
-    max_lag = 5
     window = [5, 10, 20]
     sec_window = [1, 3, 5]
     rolling_sum_cols = []
